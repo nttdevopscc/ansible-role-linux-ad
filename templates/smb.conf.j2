@@ -34,7 +34,7 @@ disable spoolss = yes
 [{{ item.name }}]
 comment = {{ item.comment }}
 path = {{ item.path }}
-read only = {% if item.ro == True %}Yes{% else %}No{% endif %}
+read only = {% if item.read_only == True %}Yes{% else %}No{% endif %}
 
 guest ok = {% if item.guest == True %}Yes{% else %}No{% endif %}
 

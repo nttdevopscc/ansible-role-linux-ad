@@ -56,7 +56,7 @@
 - name: join Domain
   shell:
     # cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | adcli join --stdin-password --host-fqdn='{{ ansible_hostname }}.{{ linux_ad_authconfig_domain }}' --domain-ou='{{ linux_ad_authconfig_computer_ou }}' --login-user={{ linux_ad_authconfig_sssd_user }} -S  {{ linux_ad_ad_info_ad_server }} {{ linux_ad_authconfig_domain }}"
-    cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | realm join --computer-ou='{{ linux_ad_authconfig_computer_ou }}' login-user='{{ linux_ad_authconfig_sssd_user }}' '{{ linux_ad_authconfig_domain }}'"
+    cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | realm join --computer-ou='{{ linux_ad_authconfig_computer_ou }}' --user='{{ linux_ad_authconfig_sssd_user }}' '{{ linux_ad_authconfig_domain }}'"
     creates: /etc/krb5.keytab
   become: yes
   notify:
