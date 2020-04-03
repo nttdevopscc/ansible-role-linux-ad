@@ -43,3 +43,20 @@ linux_ad_sudoers_d:
     nopasswd: true
     commands:
       - 'ALL'
+
+linux_ad_server_min_protocol: SMB2_10
+linux_ad_client_min_protocol: SMB2
+linux_ad_client_max_protocol: SMB3
+linux_ad_ntlm_auth: ntlmv2-only
+
+linux_ad_share_printers: False
+linux_ad_shares: []
+  # - name: test
+  #   comment: Test share
+  #   path: /tmp
+  #   read_only: True
+  #   guest: False
+  #   valid_users: user1, @usergroup
+  #   strict_allocate: True
+  #   # force users: thisuser
+  #   # invalid users:

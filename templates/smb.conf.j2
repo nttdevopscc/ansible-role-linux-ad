@@ -6,3 +6,37 @@ client use spnego = yes
 kerberos method = secrets and keytab
 realm = {{ linux_ad_authconfig_realm }}
 security = ads
+template homedir = /home/%U
+
+server min protocol = {{ linux_ad_server_min_protocol }}
+client min protocol = {{ linux_ad_client_min_protocol }}
+client max protocol = {{ linux_ad_client_max_protocol }}
+ntlm auth = {{ linux_ad_ntlm_auth }}
+
+idmap config * : backend = tdb
+idmap config * : range = 10000-199999
+idmap config {{ linux_ad_authconfig_windomain }} : backend = sss
+idmap config {{ linux_ad_authconfig_windomain }} : range = 200000-2147483647
+
+passdb backend = tdbsam
+
+{% if linux_ad_share_printers == False %}
+load printers = no
+printing = bsd
+printcap name = /dev/null
+disable spoolss = yes
+{% else %}
+; Have to implement
+{% endif %}
+
+{% for item in linux_ad_shares %}
+[{{ item.name }}]
+comment = {{ item.comment }}
+path = {{ item.path }}
+read_only = {% if item.ro == True %}Yes{% else %}No{% endif %}
+guest ok = {% if item.guest == True %}Yes{% else %}No{% endif %}
+valid users = {{ item.valid_users }}
+strict allocate = {% if item.strict_allocate == False %}No{% else %}Yes{% endif %}
+force users = {{ item.force_user }}
+invalid users = {{ item.invalid_users }}
+{% endfor %}
