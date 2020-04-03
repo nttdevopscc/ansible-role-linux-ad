@@ -66,13 +66,13 @@
 
 - name: restart smbd
   service:
-    name: smbd
+    name: '{{ smb_service }}'
     enabled: yes
     state: restarted
 
 - name: restart winbind
   service:
-    name: winbind
+    name: '{{ winbind_service }}'
     enabled: yes
     state: restarted
 

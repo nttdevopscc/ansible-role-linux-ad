@@ -22,3 +22,5 @@ authconfig_remove_packages:
   - 'sssd-libwbclient'
 
 dbus_service: 'dbus'
+winbind_service: 'winbindd'
+smb_service: 'smbd'

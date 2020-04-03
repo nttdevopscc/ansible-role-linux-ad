@@ -11,3 +11,5 @@ authconfig_packages:
   - 'nscd'
 
 dbus_service: 'messagebus'
+winbind_service: 'winbind'
+smb_service: 'smb'
