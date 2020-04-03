@@ -15,5 +15,9 @@ authconfig_packages:
   - 'chrony'
   - 'samba'
   - 'samba-common-bin'
+  - 'samba-winbind'
+
+authconfig_remove_packages:
+  - 'sssd-libwbclient'
 
 dbus_service: 'dbus'

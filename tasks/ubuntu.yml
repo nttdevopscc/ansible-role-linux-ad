@@ -3,6 +3,19 @@
   apt:
     name: "{{ authconfig_packages }}"
     update_cache: true
+    tags:
+      - aad_agent
+      - aad_packages
+      - aad_sssd
+
+- name: remove packages not required authconfig packages
+  apt:
+    name: '{{ authconfig_remove_packages }}'
+    state: absent
+    tags:
+      - aad_agent
+      - aad_packages_remove
+      - aad_sssd
 
 - name: smb.conf
   template:

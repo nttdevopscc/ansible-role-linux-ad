@@ -2,6 +2,7 @@
 # CentOS / RHEL
 authconfig_packages:
   - 'sssd'
+  - 'sssd-winbind-idmap'
   - 'adcli'
   - 'realmd'
   - 'krb5-workstation'
@@ -10,6 +11,11 @@ authconfig_packages:
   - 'authconfig'
   - 'samba-common'
   - 'samba-common-tools'
+  - 'samba'
+  - 'samba-winbind'
   - 'nscd'
+
+authconfig_remove_packages:
+  - 'sssd-libwbclient'
 
 dbus_service: 'dbus'

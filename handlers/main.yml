@@ -63,21 +63,24 @@
     name: ssh
     enabled: yes
     state: restarted
-  when: ansible_os_family == 'Debian'
 
 - name: restart smbd
   service:
     name: smbd
     enabled: yes
     state: restarted
-  when: ansible_os_family == 'Debian'
 
-- name: restart nmbd
+- name: restart winbind
   service:
-    name: nmbd
+    name: winbind
     enabled: yes
     state: restarted
-  when: ansible_os_family == 'Debian'
+
+- name: disable nmbd
+  service:
+    name: nmbd
+    enabled: no
+    state: stopped
 
 - name: restart chrony
   service:
