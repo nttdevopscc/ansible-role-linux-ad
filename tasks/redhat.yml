@@ -1,15 +1,17 @@
 ---
 - name: authconfig packages
-  yum: name='{{ authconfig_packages }}'
-  update_cache: true
+  yum:
+    name: '{{ authconfig_packages }}'
+    update_cache: true
   tags:
     - aad_agent
     - aad_packages
     - aad_sssd
 
 - name: remove packages not required authconfig packages
-  yum: name='{{ authconfig_remove_packages }}'
-  state: absent
+  yum:
+    name: '{{ authconfig_remove_packages }}'
+    state: absent
   tags:
     - aad_agent
     - aad_packages_remove

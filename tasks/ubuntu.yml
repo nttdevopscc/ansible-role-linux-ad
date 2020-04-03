@@ -3,19 +3,19 @@
   apt:
     name: "{{ authconfig_packages }}"
     update_cache: true
-    tags:
-      - aad_agent
-      - aad_packages
-      - aad_sssd
+  tags:
+    - aad_agent
+    - aad_packages
+    - aad_sssd
 
-- name: remove packages not required authconfig packages
+- name: remove packages not required auth packages
   apt:
     name: '{{ authconfig_remove_packages }}'
     state: absent
-    tags:
-      - aad_agent
-      - aad_packages_remove
-      - aad_sssd
+  tags:
+    - aad_agent
+    - aad_packages_remove
+    - aad_sssd
 
 - name: smb.conf
   template:
@@ -34,7 +34,8 @@
   notify:
     - "restart chrony"
     - "restart smbd"
-    - "restart nmbd"
+    - "disable nmbd"
+    - "restart winbind"
     - "restart sssd"
   tags:
     - aad_adjoin
