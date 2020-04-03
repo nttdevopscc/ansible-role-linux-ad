@@ -33,10 +33,12 @@ disable spoolss = yes
 [{{ item.name }}]
 comment = {{ item.comment }}
 path = {{ item.path }}
-read_only = {% if item.ro == True %}Yes{% else %}No{% endif %}
+read only = {% if item.ro == True %}Yes{% else %}No{% endif %}
+
 guest ok = {% if item.guest == True %}Yes{% else %}No{% endif %}
+
 valid users = {{ item.valid_users }}
 strict allocate = {% if item.strict_allocate == False %}No{% else %}Yes{% endif %}
-force users = {{ item.force_user }}
+force user = {{ item.force_user }}
 invalid users = {{ item.invalid_users }}
 {% endfor %}
