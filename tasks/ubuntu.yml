@@ -30,7 +30,8 @@
     - aad_samba
 
 - name: join Domain
-  shell: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | net ads join -D {{ linux_ad_authconfig_realm }} -U {{ linux_ad_authconfig_sssd_user }}"
+  shell:
+    cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | net ads join -D {{ linux_ad_authconfig_realm }} -U {{ linux_ad_authconfig_sssd_user }}"
   notify:
     - "restart chrony"
     - "restart smbd"
