@@ -17,6 +17,22 @@
     - aad_packages_remove
     - aad_sssd
 
+- name: smb.conf
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - "restart smbd"
+    - "disable nmbd"
+    - "restart winbind"
+  tags:
+    - aad_smb_conf
+    - aad_samba
+
 - name: create /etc/krb5.conf.d folder
   file:
     path: /etc/krb5.conf.d/

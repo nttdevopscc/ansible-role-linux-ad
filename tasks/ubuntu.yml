@@ -25,6 +25,10 @@
     group: root
     mode: 0644
     backup: yes
+  notify:
+    - "restart smbd"
+    - "disable nmbd"
+    - "restart winbind"
   tags:
     - aad_smb_conf
     - aad_samba
