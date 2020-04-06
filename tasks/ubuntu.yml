@@ -17,6 +17,11 @@
     - aad_packages_remove
     - aad_sssd
 
+- name: /etc/hosts entry
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }}  {{ ansible_hostname }}.{{ linux_ad_authconfig_domain }} {{ ansible_hostname }}"
+
 - name: smb.conf
   template:
     src: smb.conf.j2
@@ -32,6 +37,14 @@
   tags:
     - aad_smb_conf
     - aad_samba
+
+- name: discover Domain
+  shell:
+    cmd: "realm discover -v {{ linux_ad_authconfig_domain }}"
+
+- name: list realms
+  shell:
+    cmd: "realm list"
 
 - name: join Domain
   shell:
@@ -93,7 +106,14 @@
     - aad_nsswitch
     - aad_sssd
 
-- name: /etc/hosts entry
-  lineinfile:
-    dest: /etc/hosts
-    line: "{{ ansible_default_ipv4.address }}  {{ ansible_hostname }}.{{ linux_ad_authconfig_domain }} {{ ansible_hostname }}"
+- name: join Samba to the Domain
+  shell:
+    cmd: "net ads join -k"
+  notify:
+    - "restart smbd"
+    - "disable nmbd"
+    - "restart winbind"
+  tags:
+    - aad_adjoin
+    - aad_agent
+    - aad_samba

@@ -17,6 +17,11 @@
     - aad_packages_remove
     - aad_sssd
 
+- name: /etc/hosts entry
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }}  {{ ansible_hostname }}.{{ linux_ad_authconfig_domain }} {{ ansible_hostname }}"
+
 - name: smb.conf
   template:
     src: smb.conf.j2
@@ -25,6 +30,7 @@
     group: root
     mode: 0644
     backup: yes
+  become: yes
   notify:
     - "restart smbd"
     - "disable nmbd"
@@ -39,10 +45,19 @@
     state: directory
   when: ansible_os_family == 'RedHat' and linux_ad_ansible_distribution_major_version|int == '6'
 
+- name: discover Domain
+  shell:
+    cmd: "realm discover -v {{ linux_ad_authconfig_domain }}"
+
+- name: list realms
+  shell:
+    cmd: "realm list"
+
 - name: join Domain
   shell:
     cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | adcli join --stdin-password --host-fqdn='{{ ansible_hostname }}.{{ linux_ad_authconfig_domain }}' --domain-ou='{{ linux_ad_authconfig_computer_ou }}' --login-user={{ linux_ad_authconfig_sssd_user }} -S  {{ linux_ad_ad_info_ad_server }} {{ linux_ad_authconfig_domain }}"
     creates: /etc/krb5.keytab
+  become: yes
   notify:
     - "restart chrony"
     - "restart smbd"
@@ -59,6 +74,7 @@
   shell: "/usr/sbin/authconfig --savebackup=pre-authconfig-adcli"
   args:
     creates: /var/lib/authconfig/backup-pre-authconfig-adcli
+  become: yes
   tags:
     - aad_authconfig
     - aad_sssd
@@ -67,6 +83,7 @@
 # Parameter --nostart used since krb5.conf and sssd.conf don't exist yet.
 - name: authconfig
   shell: "/usr/sbin/authconfig --enablesssd --enablesssdauth --disableldap --disableldapauth --enablemkhomedir --update --nostart && touch /var/lib/authconfig/ansible_configured"
+  become: yes
   args:
     creates: /var/lib/authconfig/ansible_configured
   notify:
@@ -87,6 +104,7 @@
   shell: "/usr/bin/authselect select sssd with-mkhomedir && touch /var/lib/authselect/ansible_configured"
   args:
     creates: /var/lib/authselect/ansible_configured
+  become: yes
   notify:
     - "clear nscd"
     - "clear ssh AllowGroups"
@@ -107,6 +125,7 @@
     dest: /etc/nsswitch.conf
     line: 'passwd:     files sss'
     regexp: '^passwd: .*'
+  become: yes
   tags:
     - aad_nsswitch
     - aad_sssd
@@ -116,6 +135,7 @@
     dest: /etc/nsswitch.conf
     line: 'shadow:     files sss'
     regexp: '^shadow: .*'
+  become: yes
   tags:
     - aad_nsswitch
     - aad_sssd
@@ -125,11 +145,20 @@
     dest: /etc/nsswitch.conf
     line: 'group:      files sss'
     regexp: '^group: .*'
+  become: yes
   tags:
     - aad_nsswitch
     - aad_sssd
 
-- name: /etc/hosts entry
-  lineinfile:
-    dest: /etc/hosts
-    line: "{{ ansible_default_ipv4.address }}  {{ ansible_hostname }}.{{ linux_ad_authconfig_domain }} {{ ansible_hostname }}"
+- name: join Samba to the Domain
+  shell:
+    cmd: "net ads join -k"
+  become: yes
+  notify:
+    - "restart smbd"
+    - "disable nmbd"
+    - "restart winbind"
+  tags:
+    - aad_adjoin
+    - aad_agent
+    - aad_samba

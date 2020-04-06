@@ -13,6 +13,7 @@ authconfig_packages:
   - 'samba-common-tools'
   - 'samba'
   - 'samba-winbind'
+  - 'samba-winbind-clients'
   - 'nscd'
 
 authconfig_remove_packages:
