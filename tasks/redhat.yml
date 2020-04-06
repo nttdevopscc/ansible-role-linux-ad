@@ -166,6 +166,16 @@
 
 - name: winbind info
   command: 'wbinfo --own-domain'
+  register: result
+  changed_when: False
+
+- debug:
+  var: result
 
 - name: winbind check trust info
   command: 'wbinfo -t'
+  register: results
+  changed_when: False
+
+- debug:
+  var: result
