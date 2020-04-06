@@ -170,7 +170,7 @@
   changed_when: False
 
 - debug:
-  var: result
+    var: result
 
 - name: winbind check trust info
   command: 'wbinfo -t'
@@ -178,4 +178,4 @@
   changed_when: False
 
 - debug:
-  var: result
+    var: result
