@@ -113,6 +113,8 @@
     - "restart smbd"
     - "disable nmbd"
     - "restart winbind"
+    - "winbind info"
+
   tags:
     - aad_adjoin
     - aad_agent
