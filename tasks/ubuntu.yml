@@ -48,7 +48,8 @@
 
 - name: join Domain
   shell:
-    cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | net ads join -D {{ linux_ad_authconfig_realm }} -U {{ linux_ad_authconfig_sssd_user }}"
+    # cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | net ads join -D {{ linux_ad_authconfig_realm }} -U {{ linux_ad_authconfig_sssd_user }}"
+    cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | realm join --computer-ou='{{ linux_ad_authconfig_computer_ou }}' login-user='{{ linux_ad_authconfig_sssd_user }}' '{{ linux_ad_authconfig_domain }}''"
   notify:
     - "restart chrony"
     - "restart smbd"
