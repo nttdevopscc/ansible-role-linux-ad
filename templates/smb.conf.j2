@@ -39,6 +39,7 @@ guest ok = {% if item.guest == True %}Yes{% else %}No{% endif %}
 
 valid users = {{ item.valid_users }}
 strict allocate = {% if item.strict_allocate == False %}No{% else %}Yes{% endif %}
+
 force user = {{ item.force_user }}
 invalid users = {{ item.invalid_users }}
 {% endfor %}
