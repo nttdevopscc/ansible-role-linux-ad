@@ -1,6 +1,8 @@
+## {{ ansible_managed }}
+
 [global]
-realm = {{ linux_ad_authconfig_realm.upper() }}
 workgroup = {{ linux_ad_authconfig_windomain }}
+realm = {{ linux_ad_authconfig_realm.upper() }}
 client signing = yes
 client use spnego = yes
 kerberos method = secrets and keytab
