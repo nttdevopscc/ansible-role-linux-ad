@@ -92,6 +92,3 @@
 
 - name: pam-auth-update
   command: /usr/sbin/pam-auth-update --package
-
-- name: winbind info
-  command: 'wbinfo --own-domain'

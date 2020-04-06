@@ -114,9 +114,14 @@
     - "restart smbd"
     - "disable nmbd"
     - "restart winbind"
-    - "winbind info"
 
   tags:
     - aad_adjoin
     - aad_agent
     - aad_samba
+
+- name: winbind info
+  command: 'wbinfo --own-domain'
+
+- name: winbind check trust info
+  command: 'wbinfo -t'
