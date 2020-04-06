@@ -126,12 +126,12 @@
   changed_when: False
 
 - debug:
-    var: result
+    var: result.stdout
 
 - name: winbind check trust info
   command: 'wbinfo -t'
-  register: results
+  register: result
   changed_when: False
 
 - debug:
-    var: result
+    var: result.stdout
