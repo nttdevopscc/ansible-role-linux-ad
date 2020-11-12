@@ -58,5 +58,5 @@ linux_ad_shares: []
   #   guest: False
   #   valid_users: user1, @usergroup
   #   strict_allocate: True
-  #   # force_users: thisuser
+  #   # force_user: thisuser
   #   # invalid_users:
