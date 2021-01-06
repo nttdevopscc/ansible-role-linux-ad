@@ -38,9 +38,11 @@ read only = {% if item.read_only == True %}Yes{% else %}No{% endif %}
 
 guest ok = {% if item.guest == True %}Yes{% else %}No{% endif %}
 
-valid users = {{ item.valid_users }}
+{% if item.valid_users is defined %}valid users = {{ item.valid_users }}{% endif %}
+
 strict allocate = {% if item.strict_allocate == False %}No{% else %}Yes{% endif %}
 
-force user = {{ item.force_user }}
-invalid users = {{ item.invalid_users }}
+{% if item.force_user is defined %}force user = {{ item.force_user }}{% endif %}
+
+{% if item.invalid_users is defined %}invalid users = {{ item.invalid_users }}{% endif %}
 {% endfor %}
