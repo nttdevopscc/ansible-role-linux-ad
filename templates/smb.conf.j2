@@ -45,4 +45,6 @@ strict allocate = {% if item.strict_allocate == False %}No{% else %}Yes{% endif 
 {% if item.force_user is defined %}force user = {{ item.force_user }}{% endif %}
 
 {% if item.invalid_users is defined %}invalid users = {{ item.invalid_users }}{% endif %}
+
+
 {% endfor %}
