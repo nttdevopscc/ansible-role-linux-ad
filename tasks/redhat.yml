@@ -48,10 +48,18 @@
 - name: discover Domain
   shell:
     cmd: "realm discover -v {{ linux_ad_authconfig_domain }}"
+  register: result
+
+- debug:
+    var: result.stdout
 
 - name: list realms
   shell:
     cmd: "realm list"
+  register: result
+
+- debug:
+    var: result.stdout
 
 - name: join Domain
   shell:
