@@ -94,11 +94,18 @@ Specify the primary and a backup Active Directory login server.
 
 Try to rejoint to the Active Directory via deleting /etc/krb5.keytab file. Default is false.
 
+    linux_ad_join_method: 'netads'
+
+Select AD join method:
+- netads (default)
+- realm
+- adcli
+
     linux_ad_home_dir: '/home/%d/%u'
 
 Home directory of the user.
 Additionally you can use these variables:
-%u -login name
+%u - login name
 %U - UID number
 %d - domain name
 %f - fully qualified user name (user@domain))
