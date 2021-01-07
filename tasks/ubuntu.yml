@@ -61,8 +61,7 @@
     - aad_adjoin
     - aad_agent
     - aad_samba
-  when linux_ad_join_method == 'netads'
-
+  when: linux_ad_join_method == 'netads'
 
 - name: join Domain (realm)
   shell:
@@ -79,7 +78,7 @@
     - aad_adjoin
     - aad_agent
     - aad_samba
-  when linux_ad_join_method == 'realm'
+  when: linux_ad_join_method == 'realm'
 
 - name: join Domain (adcli)
   shell:
@@ -97,6 +96,14 @@
     - aad_agent
     - aad_samba
   when linux_ad_join_method == 'adcli'
+
+- name: list realms
+  shell:
+    cmd: "realm list"
+  register: result
+
+- debug:
+    var: result.stdout
 
 - name: add mkhomedir to common-session
   lineinfile:
@@ -143,16 +150,3 @@
   tags:
     - aad_nsswitch
     - aad_sssd
-
-- name: join Samba to the Domain
-  shell:
-    cmd: "net ads join -k"
-  notify:
-    - "restart smbd"
-    - "disable nmbd"
-    - "restart winbind"
-
-  tags:
-    - aad_adjoin
-    - aad_agent
-    - aad_samba

@@ -53,14 +53,6 @@
 - debug:
     var: result.stdout
 
-- name: list realms
-  shell:
-    cmd: "realm list"
-  register: result
-
-- debug:
-    var: result.stdout
-
 - name: join Domain (net ads)
   shell:
     cmd: "echo -n '{{ linux_ad_authconfig_sssd_pass }}' | net ads join -D {{ linux_ad_authconfig_domain }} -U {{ linux_ad_authconfig_sssd_user }}"
@@ -111,6 +103,14 @@
     - aad_agent
     - aad_samba
   when linux_ad_join_method == 'adcli'
+
+- name: list realms
+  shell:
+    cmd: "realm list"
+  register: result
+
+- debug:
+    var: result.stdout
 
 # Save backup
 - name: authconfig
