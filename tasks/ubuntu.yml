@@ -95,7 +95,7 @@
     - aad_adjoin
     - aad_agent
     - aad_samba
-  when linux_ad_join_method == 'adcli'
+  when: linux_ad_join_method == 'adcli'
 
 - name: list realms
   shell:

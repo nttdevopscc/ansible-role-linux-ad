@@ -68,7 +68,7 @@
     - aad_adjoin
     - aad_agent
     - aad_samba
-  when linux_ad_join_method == 'netads'
+  when: linux_ad_join_method == 'netads'
 
 - name: join Domain (realm)
   shell:
@@ -85,7 +85,7 @@
     - aad_adjoin
     - aad_agent
     - aad_samba
-  when linux_ad_join_method == 'realm'
+  when: linux_ad_join_method == 'realm'
 
 - name: join Domain (adcli)
   shell:
@@ -102,7 +102,7 @@
     - aad_adjoin
     - aad_agent
     - aad_samba
-  when linux_ad_join_method == 'adcli'
+  when: linux_ad_join_method == 'adcli'
 
 - name: list realms
   shell:
