@@ -16,7 +16,7 @@ server min protocol = {{ linux_ad_server_min_protocol }}
 client min protocol = {{ linux_ad_client_min_protocol }}
 client max protocol = {{ linux_ad_client_max_protocol }}
 ntlm auth = {{ linux_ad_ntlm_auth }}
-{% endif }%
+{% endif %}
 
 idmap config * : backend = tdb
 idmap config * : range = 10000-199999
