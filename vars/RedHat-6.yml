@@ -10,6 +10,8 @@ authconfig_packages:
   - 'samba-common'
   - 'nscd'
 
+authconfig_remove_packages: []
+
 dbus_service: 'messagebus'
 winbind_service: 'winbind'
 smb_service: 'smb'
