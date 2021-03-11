@@ -45,10 +45,23 @@
     state: directory
   when: ansible_os_family == 'RedHat' and linux_ad_ansible_distribution_major_version|int == '6'
 
-- name: discover Domain
+- name: discover Domain (net ads)
+  shell:
+    cmd: "net ads info"
+  register: result
+  when: linux_ad_join_method == 'netads'
+
+- name: discover Domain (realm)
   shell:
     cmd: "realm discover -v {{ linux_ad_authconfig_domain }}"
   register: result
+  when: linux_ad_join_method == 'realm'
+
+- name: discover Domain (adcli)
+  shell:
+    cmd: "adcli info -D {{ linux_ad_authconfig_domain }}"
+  register: result
+  when: linux_ad_join_method == 'adcli'
 
 - debug:
     var: result.stdout
@@ -104,13 +117,15 @@
     - aad_samba
   when: linux_ad_join_method == 'adcli'
 
-- name: list realms
-  shell:
-    cmd: "realm list"
-  register: result
+- block:
+  - name: list realms
+    shell:
+      cmd: "realm list"
+    register: result
 
-- debug:
-    var: result.stdout
+  - debug:
+      var: result.stdout
+  when: linux_ad_join_method == 'realm'
 
 # Save backup
 - name: authconfig
@@ -144,7 +159,7 @@
 
 # Parameter --nostart used since krb5.conf and sssd.conf don't exist yet.
 - name: authselect
-  shell: "/usr/bin/authselect select sssd with-mkhomedir && touch /var/lib/authselect/ansible_configured"
+  shell: "/usr/bin/authselect select sssd with-mkhomedir --force && touch /var/lib/authselect/ansible_configured"
   args:
     creates: /var/lib/authselect/ansible_configured
   become: yes
